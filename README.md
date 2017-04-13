@@ -24,87 +24,139 @@ Swift将代码组织成*模块*，每个模块指定一个命名空间，并强�
 为了进行下面的示例，需要确保将Swift添加到你的`$PATH`环境变量中。
 ###在macOS上
 macOS上默认的可下载工具链是在`/Library/Developer/Toolchains`，可以执行下面的命令让终端使用这些工具：
->\$ export PATH=/Library/Developer/Toolchains/swift-latest.xctoolchain/usr/bin:"${PATH}"
+
+```
+$ export PATH=/Library/Developer/Toolchains/swift-latest.xctoolchain/usr/bin:"${PATH}"
+```
 
 ###在Linux上
 首先，安装clang：
-> \$ sudo apt-get install clang
+
+```
+$ sudo apt-get install clang
+```
 
 如果你将Swift工具链安装到了系统根目录以外的其他目录，则需要执行如下命令来使用Swift安装的实际路径：
-> \$ export PATH=/path/to/Swift/usr/bin:"${PATH}"
+
+```
+$ export PATH=/path/to/Swift/usr/bin:"${PATH}"
+```
 
 你可以使用`Swift --version`命令来验证你是否正在运行预期的Swift版本：
-> \$ swift --version
-> Apple Swift version 3.1 (swiftlang-802.0.48 clang-802.0.38)
-> Target: x86_64-apple-macosx10.9
+
+```
+$ swift --version
+Apple Swift version 3.1 (swiftlang-802.0.48 clang-802.0.38)
+Target: x86_64-apple-macosx10.9
+```
 
 ##使用REPL
 如果你执行`swift`命令，不带任何参数的话，那么你将启动REPL，这是一个将会读取、评估和打印你输入的所有Swift代码结果的交互式的shell。
-> \$ swift
-> Welcome to Apple Swift version 3.1 (swiftlang-802.0.48 clang-802.0.48). Type :help for assistance.
-> 　　1>
+
+```
+$ swift
+Welcome to Apple Swift version 3.1 (swiftlang-802.0.48 clang-802.0.48). Type :help for assistance.
+　1>
+```
 
 与REPL进行交互是对Swift进行实验的好方法。例如，如果你输入表达式`1 + 2`，表达式的结果`3`将打印在下一行：
-> 　1> 1 + 2
-> $R0: Int = 3
+
+```
+　1> 1 + 2
+$R0: Int = 3
+```
 
 你可以为常量和变量分配值，然后再使用。例如，一个`String`类型的值`Hello, world!`可以赋值给常量`greeting`，然后作为参数传递给`print(_:)`函数：
-> 　2> let greeting = "Hello, world!"
-> greeting: String = "Hello, world!"
-> 　3> print(greeting)
-> Hello, world!
+
+```
+　2> let greeting = "Hello, world!"
+greeting: String = "Hello, world!"
+　3> print(greeting)
+Hello, world!
+```
 
 如果你输入一个无效的表达式，REPL将打印一个错误并显示出现问题的位置：
-> 　4> let answer = "forty"-"two"
-> error: repl.swift:4:21: error: binary operator '-' cannot be applied to two 'String' operands
-> let answer = "forty"-"two"
-> 　　　　　 ~~~~~~~^~~~~~
-> repl.swift:4:21: note: overloads for '-' exist with these partially matching parameter lists: (UInt8, UInt8), (Int8, Int8), (UInt16, UInt16), (Int16, Int16), (UInt32, UInt32), (Int32, Int32), (UInt64, UInt64), (Int64, Int64), (UInt, UInt), (Int, Int), (Float, Float), (Double, Double), (Float80, Float80), (T, T.Stride), (T, T._DisallowMixedSignArithmetic), (UnsafeMutablePointer<Pointee>, Int), (UnsafeMutablePointer<Pointee>, UnsafeMutablePointer<Pointee>), (UnsafePointer<Pointee>, Int), (UnsafePointer<Pointee>, UnsafePointer<Pointee>)
-> let answer = "forty"-"two"
-> 　　　　　　 　　^
+
+```
+4> let answer = "forty"-"two"
+error: repl.swift:4:21: error: binary operator '-' cannot be applied to two 'String' operands
+> >let answer = "forty"-"two"
+　　　　　　　　　　~~~~~~~^~~~~~
+repl.swift:4:21: note: overloads for '-' exist with these partially matching parameter lists: (UInt8, UInt8), (Int8, Int8), (UInt16, UInt16), (Int16, Int16), (UInt32, UInt32), (Int32, Int32), (UInt64, UInt64), (Int64, Int64), (UInt, UInt), (Int, Int), (Float, Float), (Double, Double), (Float80, Float80), (T, T.Stride), (T, T._DisallowMixedSignArithmetic), (UnsafeMutablePointer<Pointee>, Int), (UnsafeMutablePointer<Pointee>, UnsafeMutablePointer<Pointee>), (UnsafePointer<Pointee>, Int), (UnsafePointer<Pointee>, UnsafePointer<Pointee>)
+let answer = "forty"-"two"
+　　　　　　　　　　　　^
+```
 
 REPL的另一个有用的功能是它可以自动补全在特定上下文中使用的功能和方法。例如，如果你在一个`String`值后面输入`.re`，然后按下`Tab`键，REPL将会提供一个可用的补全列表比如`remove(at:)`和`replaceSubrange(bounds:with:)`：
-> 　5> "Hi!".re
-> Available completions:
-> 　　　remove(at: String.Index) -> Character
-> 　　　removeAll() -> Void
-> 　　　removeAll(keepingCapacity: Bool) -> Void
-> 　　　removeSubrange(bounds: ClosedRange<String.Index>) -> Void
-> 　　　removeSubrange(bounds: Range<String.Index>) -> Void
-> 　　　replaceSubrange(bounds: ClosedRange<String.Index>, with: Collection) -> Void
-> 　　　replaceSubrange(bounds: ClosedRange<String.Index>, with: String) -> Void
-> 　　　replaceSubrange(bounds: Range<String.Index>, with: Collection) -> Void
-> 　　　replaceSubrange(bounds: Range<String.Index>, with: String) -> Void
-> 　　　reserveCapacity(n: Int) -> Void
+
+```
+5> "Hi!".re
+Available completions:
+　　remove(at: String.Index) -> Character
+　　removeAll() -> Void
+　　removeAll(keepingCapacity: Bool) -> Void
+　　removeSubrange(bounds: ClosedRange<String.Index>) -> Void
+　　removeSubrange(bounds: Range<String.Index>) -> Void
+　　replaceSubrange(bounds: ClosedRange<String.Index>, with: Collection) -> Void
+　　replaceSubrange(bounds: ClosedRange<String.Index>, with: String) -> Void
+　　replaceSubrange(bounds: Range<String.Index>, with: Collection) -> Void
+　　replaceSubrange(bounds: Range<String.Index>, with: String) -> Void
+　　reserveCapacity(n: Int) -> Void
+```
 
 如果你启动一个代码块，例如使用`for-in`遍历一个数组，REPL将会自动缩进下一行，并且将提示符从`>`改为`.`以指示该行输入的代码属于代码块内。
-> 　6> let numbers = [1,2,3]
-> numbers: [Int] = 3 values {
-> 　　[0] = 1
-> 　　[1] = 2
-> 　　[2] = 3
-> }
-> 　7> for n in numbers.reversed() {
-> 　８.　　　　print(n)
-> 　９. }
-> ３
-> ２
-> １
+
+```
+　6> let numbers = [1,2,3]
+numbers: [Int] = 3 values {
+　[0] = 1
+　[1] = 2
+　[2] = 3
+}
+　7> for n in numbers.reversed() {
+　８.　　　print(n)
+　９. }
+３
+２
+１
+```
 
 Swift的所有功能都可以从REPL获得，从编写控制流程语句到声明、实例化结构体和类。
 
 还可以导入任何可用的系统模块，例如macOS上的Darwin和Linux上的Glibc：
 ###在macOS上
-> 1> import Darwin
-> 2> arc4random_uniform(10)
-> $R0: UInt32 = 8
+```
+　1> import Darwin
+　2> arc4random_uniform(10)
+$R0: UInt32 = 8
+```
 
 ###在Linux上
-> 1> import Glibc
-> 2> random() % 10
-> $R0: Int32 = 6
+```
+　1> import Glibc
+　2> random() % 10
+$R0: Int32 = 6
+```
 
 ##使用Package Manager
+SPM提供了一个基于协议的系统用来编译库和运行，并且在不同的项目之间共享代码。
+###创建Swift Package
+要创建一个新的Swift Package，首先创建一个文件夹取名Hello：
+
+```
+$ mkdir Hello
+$ cd Hello
+```
+
+每个Swift Package都必须在其根目录里有一个Package.swift的列表文件。可以用以下命令创建最小的Package：
+
+```
+$ swift package init
+```
+
+默认情况下，init命令将创建以下目录结构：
+![Snip20170413_5](http://onmw6wg88.bkt.clouddn.com/Snip20170413_5.png)
+
 
 
 
