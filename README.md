@@ -149,6 +149,8 @@ Swift的所有功能都可以从REPL获得，从编写控制流程语句到声�
 $R0: UInt32 = 8
 ```
 
+> macOS上可用的系统模块，请参考：[Swift System Modules](https://github.com/andelf/Defines-Swift)
+
 ### 在Linux上
 
 ```
