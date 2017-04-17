@@ -179,7 +179,9 @@ $ swift package init
 ```
 
 默认情况下，`init`命令将创建以下目录结构：
+
 ![Snip20170413_5](http://onmw6wg88.bkt.clouddn.com/Snip20170413_5.png)
+
 你可以使用`swift build`来编译这个Package，这将会自动下载、解析和编译Package.swift文件中的所有依赖库。
 
 ```
