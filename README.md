@@ -154,9 +154,94 @@ $ cd Hello
 $ swift package init
 ```
 
-默认情况下，init命令将创建以下目录结构：
+默认情况下，`init`命令将创建以下目录结构：
 ![Snip20170413_5](http://onmw6wg88.bkt.clouddn.com/Snip20170413_5.png)
+你可以使用`swift build`来编译这个Package，这将会自动下载、解析和编译Package.swift文件中的所有依赖库。
 
+```
+$ swift build
+Compile Swift Module 'Hello' (1 sources)
+```
+要运行Package测试，使用`swift test`命令：
 
+```
+$ swift test
+Compile Swift Module 'HelloTests' (1 sources)
+Linking ./.build/debug/HelloPackageTests.xctest/Contents/MacOS/HelloPackageTests
+Test Suite 'All tests' started at 2016-08-29 08:00:31.453
+Test Suite 'HelloPackageTests.xctest' started at 2016-08-29 08:00:31.454
+Test Suite 'HelloTests' started at 2016-08-29 08:00:31.454
+Test Case '-[HelloTests.HelloTests testExample]' started.
+Test Case '-[HelloTests.HelloTests testExample]' passed (0.001 seconds).
+Test Suite 'HelloTests' passed at 2016-08-29 08:00:31.455.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'HelloPackageTests.xctest' passed at 2016-08-29 08:00:31.455.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'All tests' passed at 2016-08-29 08:00:31.455.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.001 (0.002) seconds
+```
+###编译可执行文件
+如果一个Package包含有`main.swift`文件，那么该Package会被认为是一个可执行文件。SPM会把它编译成二进制可执行文件。
+
+下面这个例子中，该Package将生成一个输出“Hello，world！”的名为`HelloWorld`的可执行文件。
+
+首先创建一个名为`HelloWorld`的文件夹：
+
+```
+$ mkdir HelloWorld
+$ cd HelloWorld
+```
+现在执行SPM带有的type参数的init命令：
+
+```
+$ swift package init --type executable
+Creating executable package: HelloWorld
+Creating Package.swift
+Creating .gitignore
+Creating Sources/
+Creating Sources/main.swift
+Creating Tests/
+```
+通过运行`swift build`命令来编译Package：
+
+```
+$ swift build
+Compile Swift Module 'HelloWorld' (1 sources)
+Linking ./.build/debug/HelloWorld
+```
+编译完成后，生成的可执行文件将在`.build`文件夹中，可以使用下面命令运行`HelloWorld`程序：
+
+```
+$ ./.build/debug/HelloWorld
+Hello, world!
+```
+下面，让我们在新的源文件中定义一个新的函数`sayHello(name:)`，并且能够被调用，而不再是直接调用`print(_:)`。
+###使用多个源文件
+在`Source/`文件夹中创建一个新文件`Greeter.swift`，并输入以下代码：
+
+```
+func sayHello(name: String) {
+    print("Hello, \(name)!")
+}
+```
+现在，再次打开`main.swift`，并用以下代码替换现有内容：
+
+```
+if CommandLine.arguments.count != 2 {
+    print("Usage: hello NAME")
+} else {
+    let name = CommandLine.arguments[1]
+    sayHello(name: name)
+}
+```
+跟之前使用硬编码名称方式不同的是，`main.swift`现在是读取命令行的参数。并且相比直接调用`print(_:)`，`main.swift`现在调用的是`sayHello(name:)`方法。由于该方法是`HelloWorld`模块的一部分，所以并不需要`import`。
+
+运行`swift build`并尝试新版本的`HelloWorld`：
+
+```
+$ swift build
+$ ./.build/debug/HelloWorld World
+Hello, World!
+```
 
 
