@@ -396,8 +396,5 @@ Process 40246 exited with status = 0 (0x00000000)
 
 到此，关于SPM的Swift REPL、编译系统以及LLDB调试器的使用入门就介绍完了。
 
-## 使用示例
-
-
 
 
